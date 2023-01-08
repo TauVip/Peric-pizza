@@ -1,8 +1,16 @@
-import { useSelector } from 'react-redux'
+import {
+  faMinusCircle,
+  faPlusCircle,
+  faTrash
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCartAction, deleteItemAction } from '../actions/cartActions'
 import Navbar from '../components/Navbar'
 import './cart.css'
 
 const Cart = () => {
+  const dispatch = useDispatch()
   const cartState = useSelector(state => state.cartReducer)
   const cartItems = cartState.cartItems
 
@@ -24,6 +32,53 @@ const Cart = () => {
               </div>
               <div className='cart-body'>
                 <img src={item.image} alt={item.name} />
+              </div>
+              <div className='cart-footer'>
+                <div className='cart-footer-top'>
+                  <p className='cart-price'>
+                    Price: {item.quantity} *{' '}
+                    {item.prices[0][item.variant].toFixed(2)} = $
+                    {item.price.toFixed(2)}
+                  </p>
+                </div>
+                <div className='cart-footer-bottom'>
+                  <div className='cart-footer-bottom-left'>
+                    <FontAwesomeIcon
+                      icon={faTrash}
+                      onClick={() => dispatch(deleteItemAction(item))}
+                    />
+                  </div>
+                  <div className='cart-footer-bottom-right'>
+                    <p>
+                      Quantity:{' '}
+                      <FontAwesomeIcon
+                        icon={faPlusCircle}
+                        onClick={() =>
+                          dispatch(
+                            addToCartAction(
+                              item,
+                              item.quantity + 1,
+                              item.variant
+                            )
+                          )
+                        }
+                      />
+                      <span className='quantity'>{item.quantity}</span>
+                      <FontAwesomeIcon
+                        icon={faMinusCircle}
+                        onClick={() =>
+                          dispatch(
+                            addToCartAction(
+                              item,
+                              item.quantity - 1,
+                              item.variant
+                            )
+                          )
+                        }
+                      />
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           ))}

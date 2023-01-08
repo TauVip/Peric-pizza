@@ -1,6 +1,6 @@
 export const addToCartAction =
   (pizza, quantity, variant) => (dispatch, getState) => {
-    let cartItems = {
+    const cartItems = {
       _id: pizza._id,
       name: pizza.name,
       variant,
@@ -14,3 +14,6 @@ export const addToCartAction =
     const cartItem = getState().cartReducer.cartItems
     localStorage.setItem('cartItems', JSON.stringify(cartItem))
   }
+
+export const deleteItemAction = pizza => dispatch =>
+  dispatch({ type: 'DELETE_ITEM', payload: pizza })
